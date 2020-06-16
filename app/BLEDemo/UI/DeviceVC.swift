@@ -84,7 +84,11 @@ extension DeviceVC: BTDeviceDelegate {
         let pathToSound = Bundle.main.path(forResource: "doorbell", ofType: "mp3")
         let url = URL(fileURLWithPath: pathToSound!)
         do {
+            let audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(AVAudioSession.Category.playback, mode: AVAudioSession.Mode.default, options: [.mixWithOthers])
+            try audioSession.setActive(true, options: [])
             audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer.volume = 0.3
             audioPlayer.play()
         } catch {
             print("Error playing audio")
